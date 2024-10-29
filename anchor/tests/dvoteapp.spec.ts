@@ -12,7 +12,7 @@ describe('Dvoteapp', () => {
  
  
   it('Initialize Poll', async () => {
-    const context =  await startAnchor("", [{name: "voting", programId: votingAddress}], []);
+    const context =  await startAnchor("", [{name: "dvoteapp", programId: votingAddress}], []);
     const provider = new BankrunProvider(context);
 
     const votingProgram = new Program<Dvoteapp>(
@@ -28,6 +28,15 @@ describe('Dvoteapp', () => {
       new anchor.BN(1830217343),
     ).rpc();
 
+    
+    const [pollAddress] = PublicKey.findProgramAddressSync(
+      [new anchor.BN(1).toArrayLike(Buffer, 'le', 8)],
+      votingAddress
+    )
+
+    const poll = await votingProgram.account.poll.fetch(pollAddress);
+
+    console.log(poll);
 
   })
 })
