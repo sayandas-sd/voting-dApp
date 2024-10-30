@@ -27,6 +27,7 @@
         },
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -123,16 +124,16 @@
       ]
     },
     {
-      "name": "initialize_vote",
+      "name": "vote",
       "discriminator": [
-        71,
-        196,
-        78,
-        199,
-        191,
-        162,
-        80,
-        238
+        227,
+        110,
+        155,
+        23,
+        136,
+        126,
+        172,
+        25
       ],
       "accounts": [
         {
@@ -141,6 +142,7 @@
         },
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {

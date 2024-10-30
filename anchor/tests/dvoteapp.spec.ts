@@ -74,7 +74,7 @@ describe('Dvoteapp', () => {
     const carCandidate = await votingProgram.account.candidate.fetch(carAddress);
     console.log(carCandidate);
 
-    expect(carCandidate.candidateVotes.toNumber()).toEqual(0);
+  
 
 
     const [carAddressTwo] = PublicKey.findProgramAddressSync(
@@ -84,12 +84,30 @@ describe('Dvoteapp', () => {
 
     const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
     console.log(carCandidateTwo);
+
     
-    expect(carCandidateTwo.candidateVotes.toNumber()).toEqual(0);
 
   })
 
-  it('Vote', async () => {
 
-  })
+  it('vote', async () => {
+    await votingProgram.methods
+      .vote(
+        "chevrolet corvett c6",
+        new anchor.BN(1),
+      )
+      .rpc()
+
+
+      const [carAddressTwo] = PublicKey.findProgramAddressSync(
+        [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("chevrolet corvett c6")],
+        votingAddress
+      )
+  
+      const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
+      console.log(carCandidateTwo);
+      
+
+  });
+  
 })

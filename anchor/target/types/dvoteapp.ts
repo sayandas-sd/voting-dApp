@@ -33,6 +33,7 @@ export type Dvoteapp = {
         },
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -129,16 +130,16 @@ export type Dvoteapp = {
       ]
     },
     {
-      "name": "initializeVote",
+      "name": "vote",
       "discriminator": [
-        71,
-        196,
-        78,
-        199,
-        191,
-        162,
-        80,
-        238
+        227,
+        110,
+        155,
+        23,
+        136,
+        126,
+        172,
+        25
       ],
       "accounts": [
         {
@@ -147,6 +148,7 @@ export type Dvoteapp = {
         },
         {
           "name": "poll",
+          "writable": true,
           "pda": {
             "seeds": [
               {

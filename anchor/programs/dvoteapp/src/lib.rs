@@ -35,10 +35,14 @@ pub mod dvoteapp {
           Ok(())
     }
     
-    pub fn initialize_vote(ctx: Context<Vote>, _candidate_name: String, _poll_id: u64) -> Result<()> {
+    pub fn vote(ctx: Context<Vote>, _candidate_name: String, _poll_id: u64) -> Result<()> {
 
           let candidate = &mut ctx.accounts.candidate;
           candidate.candidate_vote += 1;
+
+          msg!("voted for candidate: {}", candidate.candidate_name);
+          msg!("votes: {}", candidate.candidate_vote);
+
           Ok(())
     }
 }
@@ -84,6 +88,7 @@ pub struct InitializeCandidate<'info> {
   pub signer: Signer<'info>,
 
   #[account(
+    mut,
     seeds = [poll_id.to_le_bytes().as_ref()],
     bump,
   )]
@@ -124,6 +129,7 @@ pub struct Vote<'info> {
   pub signer: Signer<'info>,
 
   #[account(
+    mut,
     seeds = [poll_id.to_le_bytes().as_ref()],
     bump,
   )]
