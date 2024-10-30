@@ -10,20 +10,27 @@ const votingAddress = new PublicKey("AsjZ3kWAUSQRNt2pZVeJkywhZ6gpLpHZmJjduPmKZDZ
 
 describe('Dvoteapp', () => {
  
- 
-  it('Initialize Poll', async () => {
-    const context =  await startAnchor("", [{name: "dvoteapp", programId: votingAddress}], []);
-    const provider = new BankrunProvider(context);
+  
+  let context;
+  let provider;
+  let votingProgram:any;
 
-    const votingProgram = new Program<Dvoteapp>(
+  beforeAll(async ()=>{
+    context =  await startAnchor("", [{name: "dvoteapp", programId: votingAddress}], []);
+    provider = new BankrunProvider(context);
+
+    votingProgram = new Program<Dvoteapp>(
       IDL,
       provider,
     );
+  })
+ 
+  it('Initialize Poll', async () => {
 
 
     await votingProgram.methods.initializePoll(
       new anchor.BN(1),
-      "what is your car?",
+      "what is your favorite car",
       new anchor.BN(0), 
       new anchor.BN(1830217343),
     ).rpc();
@@ -41,6 +48,48 @@ describe('Dvoteapp', () => {
     expect(poll.pollId.toNumber()).toEqual(1);
     expect(poll.description).toEqual("what is your favorite car");
     expect(poll.pollStart.toNumber()).toBeLessThan(poll.pollEnd.toNumber());
+
+  })
+
+
+  it('Initialize Candidate', async () => {
+
+    await votingProgram.methods.initializeCandidate(
+      "supra",
+      new anchor.BN(1),
+    ).rpc();
+
+     
+    await votingProgram.methods.initializeCandidate(
+      "chevrolet corvett c6",
+      new anchor.BN(1),
+    ).rpc();
+
+
+    const [carAddress] = PublicKey.findProgramAddressSync(
+      [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("supra")],
+      votingAddress
+    )
+
+    const carCandidate = await votingProgram.account.candidate.fetch(carAddress);
+    console.log(carCandidate);
+
+    expect(carCandidate.candidateVotes.toNumber()).toEqual(0);
+
+
+    const [carAddressTwo] = PublicKey.findProgramAddressSync(
+      [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("chevrolet corvett c6")],
+      votingAddress
+    )
+
+    const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
+    console.log(carCandidateTwo);
+    
+    expect(carCandidateTwo.candidateVotes.toNumber()).toEqual(0);
+
+  })
+
+  it('Vote', async () => {
 
   })
 })
