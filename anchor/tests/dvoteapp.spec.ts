@@ -74,6 +74,11 @@ describe('Dvoteapp', () => {
     const carCandidate = await votingProgram.account.candidate.fetch(carAddress);
     console.log(carCandidate);
 
+    if (carCandidate?.candidateVotes) {
+      expect(carCandidate.candidateVotes.toNumber()).toEqual(0);
+    } else {
+      console.error('candidateVotes is undefined');
+    }
   
 
 
@@ -85,6 +90,11 @@ describe('Dvoteapp', () => {
     const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
     console.log(carCandidateTwo);
 
+    if (carCandidateTwo?.candidateVotes) {
+      expect(carCandidateTwo.candidateVotes.toNumber()).toEqual(0);
+    } else {
+      console.error('candidateVotes is undefined');
+    }
     
 
   })
@@ -107,6 +117,11 @@ describe('Dvoteapp', () => {
       const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
       console.log(carCandidateTwo);
       
+      if (carCandidateTwo?.candidateVotes) {
+        expect(carCandidateTwo.candidateVotes.toNumber()).toEqual(1);
+      } else {
+        console.error('candidateVotes is undefined');
+      }
 
   });
   
