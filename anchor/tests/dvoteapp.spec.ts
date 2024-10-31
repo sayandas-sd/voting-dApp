@@ -61,7 +61,7 @@ describe('Dvoteapp', () => {
 
      
     await votingProgram.methods.initializeCandidate(
-      "chevrolet corvett c6",
+      "dodge",
       new anchor.BN(1),
     ).rpc();
 
@@ -83,7 +83,7 @@ describe('Dvoteapp', () => {
 
 
     const [carAddressTwo] = PublicKey.findProgramAddressSync(
-      [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("chevrolet corvett c6")],
+      [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("dodge")],
       votingAddress
     )
 
@@ -103,14 +103,14 @@ describe('Dvoteapp', () => {
   it('vote', async () => {
     await votingProgram.methods
       .vote(
-        "chevrolet corvett c6",
+        "dodge",
         new anchor.BN(1),
       )
       .rpc()
 
 
       const [carAddressTwo] = PublicKey.findProgramAddressSync(
-        [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("chevrolet corvett c6")],
+        [new anchor.BN(1).toArrayLike(Buffer, 'le', 8), Buffer.from("dodge")],
         votingAddress
       )
   
