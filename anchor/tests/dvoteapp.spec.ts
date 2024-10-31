@@ -6,23 +6,26 @@ import { BankrunProvider, startAnchor } from "anchor-bankrun";
 
 const IDL = require('../target/idl/dvoteapp.json');
 
-const votingAddress = new PublicKey("AsjZ3kWAUSQRNt2pZVeJkywhZ6gpLpHZmJjduPmKZDZZ");
+const votingAddress = new PublicKey("5bTrHzxMCi5mz3hKrcAmu81pd4gHcjWTTYHWjp2uzqvi");
 
 describe('Dvoteapp', () => {
  
   
   let context;
   let provider;
-  let votingProgram:any;
+  
+  anchor.setProvider(anchor.AnchorProvider.env());
+
+  let votingProgram = anchor.workspace.Dvoteapp as Program<Dvoteapp>;
 
   beforeAll(async ()=>{
-    context =  await startAnchor("", [{name: "dvoteapp", programId: votingAddress}], []);
+    /*context =  await startAnchor("", [{name: "dvoteapp", programId: votingAddress}], []);
     provider = new BankrunProvider(context);
 
     votingProgram = new Program<Dvoteapp>(
       IDL,
       provider,
-    );
+    );*/
   })
  
   it('Initialize Poll', async () => {
@@ -74,8 +77,8 @@ describe('Dvoteapp', () => {
     const carCandidate = await votingProgram.account.candidate.fetch(carAddress);
     console.log(carCandidate);
 
-    if (carCandidate?.candidateVotes) {
-      expect(carCandidate.candidateVotes.toNumber()).toEqual(0);
+    if (carCandidate?.candidateVote) {
+      expect(carCandidate.candidateVote.toNumber()).toEqual(0);
     } else {
       console.error('candidateVotes is undefined');
     }
@@ -90,8 +93,8 @@ describe('Dvoteapp', () => {
     const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
     console.log(carCandidateTwo);
 
-    if (carCandidateTwo?.candidateVotes) {
-      expect(carCandidateTwo.candidateVotes.toNumber()).toEqual(0);
+    if (carCandidateTwo?.candidateVote) {
+      expect(carCandidateTwo.candidateVote.toNumber()).toEqual(0);
     } else {
       console.error('candidateVotes is undefined');
     }
@@ -117,8 +120,8 @@ describe('Dvoteapp', () => {
       const carCandidateTwo = await votingProgram.account.candidate.fetch(carAddressTwo);
       console.log(carCandidateTwo);
       
-      if (carCandidateTwo?.candidateVotes) {
-        expect(carCandidateTwo.candidateVotes.toNumber()).toEqual(1);
+      if (carCandidateTwo?.candidateVote) {
+        expect(carCandidateTwo.candidateVote.toNumber()).toEqual(1);
       } else {
         console.error('candidateVotes is undefined');
       }
