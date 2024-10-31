@@ -1,4 +1,5 @@
-import { ActionGetResponse, ACTIONS_CORS_HEADERS } from "@solana/actions"
+import { ActionGetResponse, ActionPostRequest, ACTIONS_CORS_HEADERS } from "@solana/actions"
+import { Connection, PublicKey } from "@solana/web3.js";
 
 
 export const OPTIONS = GET;
@@ -26,5 +27,38 @@ export async function GET(request: Request) {
     };  
 
     return Response.json(actionMetadata, { headers: ACTIONS_CORS_HEADERS });
+}
+
+
+export async function POST(request: Request) {
+    const url = new URL(request.url);
+    const candidate = url.searchParams.get("candidate");
+
+    if(candidate != "supra" && candidate != "dodge") {
+
+        return new Response("Invalid candidate", {
+            status: 400,
+            headers: ACTIONS_CORS_HEADERS
+        })
+
+    }
+
+    const connection = new Connection("http://127.0.0.1:8899", "confirmed");
+
+    const body: ActionPostRequest = await request.json();
+
+    let voter;
+
+    try{
+        voter = new PublicKey(body.account);
+    } catch(e) {
+        return new Response("Invalid candidate", {
+            status: 400,
+            headers: ACTIONS_CORS_HEADERS
+        })
+    }
+
+
+
 }
   
